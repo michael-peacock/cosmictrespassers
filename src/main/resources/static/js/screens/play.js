@@ -7,10 +7,12 @@ game.PlayScreen = me.ScreenObject.extend({
 	  me.game.world.addChild(new me.ColorLayer("background", "#000000"), 0);
 
 	  // player
-      me.game.world.addChild(me.pool.pull("player"));
+      me.game.world.addChild(me.pool.pull("player"), 1);
       
       // enemy
-      me.game.world.addChild(me.pool.pull("enemy", 50, 50), 2);
+      this.enemyManager = new game.EnemyManager();
+      this.enemyManager.createEnemies();
+      me.game.world.addChild(this.enemyManager, 2);
       
       // key bindings
       me.input.bindKey(me.input.KEY.LEFT, "left");
