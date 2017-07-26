@@ -8,8 +8,8 @@ var game = {
         score : 0,
         enemyCount : 0,
         waveCount : 0,
-        enemyColumns : 2,
-        enemyRows : 2,
+        enemyColumns : 9,
+        enemyRows : 5,
         enemyVelocity : 16
     },
 
