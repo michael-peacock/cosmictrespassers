@@ -17,6 +17,13 @@ var game = {
             return;
         }
 
+        // Initialize the audio.
+        if (!me.audio.init("wav,mp3,ogg") ) {
+            alert("Your browser does not support HTML5 audio.");
+            return;
+        }
+        
+        
         // add "#debug" to the URL to enable the debug Panel
         if (me.game.HASH.debug === true) {
             window.onReady(function () {
@@ -25,8 +32,6 @@ var game = {
         }
         
 
-        // Initialize the audio.
-        me.audio.init("mp3,ogg");
 
         // set and load all resources.
         // (this will also automatically switch to the loading screen)
@@ -46,6 +51,9 @@ var game = {
     	// register the player and enemy objects
     	me.pool.register("player", game.Player);
     	me.pool.register("enemy", game.Enemy);
+    	
+    	// register laser
+    	me.pool.register("laser", game.Laser);
     	
         // set the "Play/Ingame" Screen Object
         this.playScreen = new game.PlayScreen();

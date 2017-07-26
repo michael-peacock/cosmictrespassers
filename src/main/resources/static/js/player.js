@@ -11,6 +11,15 @@ game.Player = me.Sprite.extend({
   },
   update : function (time) {
 	    this._super(me.Sprite, "update", [time]);
+
+	    if (me.input.isKeyPressed("shoot")) {
+	        me.game.world.addChild(me.pool.pull("laser", this.pos.x - game.Laser.width, this.pos.y - game.Laser.height));
+	     
+	        // play the "shoot" audio clip
+	        me.audio.play("shoot");
+	    }
+
+	    
 	    if (me.input.isKeyPressed("left")) {
 	        this.pos.x -= this.velx * time / 1000;
 	    }

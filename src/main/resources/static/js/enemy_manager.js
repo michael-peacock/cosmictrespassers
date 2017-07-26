@@ -15,15 +15,48 @@ game.EnemyManager = me.Container.extend({
 	      }
 	  }
 	  this.updateChildBounds();
+	  this.createdEnemies = true;
   },
   onActivateEvent : function () {
 	    var _this = this;
 	    this.timer = me.timer.setInterval(function () {
-	        _this.pos.x += _this.vel;
+	        var bounds = _this.childBounds;
+
+	        if ((_this.vel > 0 && (bounds.right + _this.vel) >= me.game.viewport.width) ||
+	            (_this.vel < 0 && (bounds.left + _this.vel) <= 0)) {
+	            _this.vel *= -1;
+	            _this.pos.y += 16;
+	            if (_this.vel > 0) {
+	              _this.vel += 5;
+	            }
+	            else {
+	              _this.vel -= 5;
+	            }
+	            game.playScreen.checkIfLoss(bounds.bottom);
+	        }
+	        else {
+	            _this.pos.x += _this.vel;
+	        }
 	    }, 1000);
 	},
 
+	update : function (time) {
+		// this is the check for the win condition
+		// triple = ftw!
+		if (this.children.length === 0 && this.createdEnemies) {
+	        game.playScreen.reset();
+	    }
+	    this._super(me.Container, "update", [time]);
+	    this.updateChildBounds();
+	},	
+	
 	onDeactivateEvent : function () {
 	    me.timer.clearInterval(this.timer);
-	}  
+	},
+	removeChildNow : function (child) {
+	    this._super(me.Container, "removeChildNow", [child]);
+        // play the "shoot" audio clip
+        me.audio.play("invaderkilled");
+	    this.updateChildBounds();
+	}
 });
