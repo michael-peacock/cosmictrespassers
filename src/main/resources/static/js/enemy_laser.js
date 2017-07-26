@@ -1,17 +1,17 @@
-game.Laser = me.Entity.extend({
+game.EnemyLaser = me.Entity.extend({
     init : function (x, y) {
-        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height }]);
+        this._super(me.Entity, "init", [x, y, { width: game.EnemyLaser.width, height: game.Laser.height }]);
         this.z = 5;
         this.body.setVelocity(0, 300);
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
             init : function () {
-                this._super(me.Renderable, "init", [0, 0, game.Laser.width, game.Laser.height]);
+                this._super(me.Renderable, "init", [0, 0, game.EnemyLaser.width, game.Laser.height]);
             },
             destroy : function () {},
             draw : function (renderer) {
                 var color = renderer.getColor();
-                renderer.setColor('#5EFF7E');
+                renderer.setColor('#FF2222');
                 renderer.fillRect(0, 0, this.width, this.height);
                 renderer.setColor(color);
             }
@@ -31,15 +31,13 @@ game.Laser = me.Entity.extend({
         return true;
     },
     onCollision : function (res, other) {
-        if (other.body.collisionType === me.collision.types.ENEMY_OBJECT) {
+        if (other.body.collisionType === me.collision.types.PLAYER_OBJECT) {
             me.game.world.removeChild(this);
             game.playScreen.enemyManager.removeChild(other);
-            game.data.score += 100;
-            game.data.enemyCount--;
             return false;
         }
     }    
 });
 
-game.Laser.width = 5;
-game.Laser.height = 28;
+game.EnemyLaser.width = 5;
+game.EnemyLaser.height = 5;

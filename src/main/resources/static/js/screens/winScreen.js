@@ -1,33 +1,9 @@
-game.PlayScreen = me.ScreenObject.extend({
-	
-  // check win/loss condition
-	checkIfLoss : function (y) {
-	    if (y >= this.player.pos.y) {
-	       this.reset();
-	    }
-	},	
+game.WinScreen = me.ScreenObject.extend({
   /**
    * action to perform on state change
    */
   onResetEvent : function () {
-	  // background
-	  me.game.world.addChild(new me.ColorLayer("background", "#000000"), 0);
-	  
-      game.data.waveCount += 1;
-
-      // add our HUD to the game world
-      this.HUD = new game.HUD.Container();
-      me.game.world.addChild(this.HUD);	  
-
-	  // player
-	  this.player = me.pool.pull("player");
-	  me.game.world.addChild(this.player, 1);
-      
-      // enemy
-      this.enemyManager = new game.EnemyManager();
-      this.enemyManager.createEnemies();
-      me.game.world.addChild(this.enemyManager, 2);
-      
+     
       // key bindings
       me.input.bindKey(me.input.KEY.LEFT, "left");
       me.input.bindKey(me.input.KEY.RIGHT, "right");

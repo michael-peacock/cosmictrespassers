@@ -4,14 +4,16 @@ game.EnemyManager = me.Container.extend({
           this.COLS * 64 - 32,
           this.ROWS * 64 - 32
       ]);
-      this.COLS = 9;
-      this.ROWS = 4;
-      this.vel = 16;
+      this.COLS = game.data.enemyColumns;
+      this.ROWS = game.data.enemyRows;
+      this.vel =  game.data.enemyVelocity;
+
   },
   createEnemies : function () {
 	  for (var i = 0; i < this.COLS; i++) {
 	      for (var j = 0; j < this.ROWS; j++) {
 	          this.addChild(me.pool.pull("enemy", i * 64, j * 64));
+	          game.data.enemyCount++;
 	      }
 	  }
 	  this.updateChildBounds();
@@ -45,6 +47,7 @@ game.EnemyManager = me.Container.extend({
 		// triple = ftw!
 		if (this.children.length === 0 && this.createdEnemies) {
 	        game.playScreen.reset();
+	        game.data.enemyVelocity += 5;
 	    }
 	    this._super(me.Container, "update", [time]);
 	    this.updateChildBounds();

@@ -5,7 +5,12 @@ var game = {
     // an object where to store game information
     data : {
         // score
-        score : 0
+        score : 0,
+        enemyCount : 0,
+        waveCount : 0,
+        enemyColumns : 2,
+        enemyRows : 2,
+        enemyVelocity : 16
     },
 
 
