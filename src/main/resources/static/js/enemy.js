@@ -50,10 +50,23 @@ game.Invader2 = me.Entity.extend({
 
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
-
+		    
+		    var randomInt = this.getRandomInt(1,1000);
+		    
+	        
+		    if (randomInt == 50) {
+		        me.game.world.addChild(me.pool.pull("enemyLaser", this.pos.x - game.EnemyLaser.width, this.pos.y - game.EnemyLaser.height));
+		     
+		        // play the "shoot" audio clip
+		        //me.audio.play("shoot");
+		    }		    
+		    
 		    this.body.update();
 
 		    return true;
+		},
+		getRandomInt: function (min, max) {
+		    return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 	});
 

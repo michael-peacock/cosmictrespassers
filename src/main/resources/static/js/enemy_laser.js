@@ -1,12 +1,12 @@
 game.EnemyLaser = me.Entity.extend({
     init : function (x, y) {
-        this._super(me.Entity, "init", [x, y, { width: game.EnemyLaser.width, height: game.Laser.height }]);
+        this._super(me.Entity, "init", [x, y, { width: game.EnemyLaser.width, height: game.EnemyLaser.height }]);
         this.z = 5;
-        this.body.setVelocity(0, 300);
+        this.body.setVelocity(0, 30);
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
             init : function () {
-                this._super(me.Renderable, "init", [0, 0, game.EnemyLaser.width, game.Laser.height]);
+                this._super(me.Renderable, "init", [0, 0, game.EnemyLaser.width, game.EnemyLaser.height]);
             },
             destroy : function () {},
             draw : function (renderer) {
@@ -20,7 +20,7 @@ game.EnemyLaser = me.Entity.extend({
     },
 
     update : function (time) {
-        this.body.vel.y -= this.body.accel.y * time / 1000;
+        this.body.vel.y += this.body.accel.y * time / 1000;
         if (this.pos.y + this.height <= 0) {
             me.game.world.removeChild(this);
         }
@@ -33,7 +33,8 @@ game.EnemyLaser = me.Entity.extend({
     onCollision : function (res, other) {
         if (other.body.collisionType === me.collision.types.PLAYER_OBJECT) {
             me.game.world.removeChild(this);
-            game.playScreen.enemyManager.removeChild(other);
+            game.playScreen.resetPlayerEntity();
+            game.data.playerLives--;
             return false;
         }
     }    

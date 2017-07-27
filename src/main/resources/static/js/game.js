@@ -10,7 +10,11 @@ var game = {
         waveCount : 0,
         enemyColumns : 9,
         enemyRows : 5,
-        enemyVelocity : 16
+        enemyVelocity : 16,
+        playerWidth: 26,
+        playerHeight:16,
+        playerLives:3,
+        	
     },
 
 
@@ -61,6 +65,8 @@ var game = {
     	
     	// register laser
     	me.pool.register("laser", game.Laser);
+    	me.pool.register("enemyLaser", game.EnemyLaser);
+
     	
         // set the "Play/Ingame" Screen Object
         this.playScreen = new game.PlayScreen();

@@ -10,6 +10,7 @@ game.PlayScreen = me.ScreenObject.extend({
    * action to perform on state change
    */
   onResetEvent : function () {
+	  
 	  // background
 	  me.game.world.addChild(new me.ColorLayer("background", "#000000"), 0);
 	  
@@ -18,10 +19,8 @@ game.PlayScreen = me.ScreenObject.extend({
       // add our HUD to the game world
       this.HUD = new game.HUD.Container();
       me.game.world.addChild(this.HUD);	  
-
-	  // player
-	  this.player = me.pool.pull("player");
-	  me.game.world.addChild(this.player, 1);
+      
+      this.resetPlayerEntity();
       
       // enemy
       this.enemyManager = new game.EnemyManager();
@@ -29,14 +28,12 @@ game.PlayScreen = me.ScreenObject.extend({
       me.game.world.addChild(this.enemyManager, 2);
       
       // key bindings
-      me.input.bindKey(me.input.KEY.LEFT, "left");
-      me.input.bindKey(me.input.KEY.RIGHT, "right");
-      me.input.bindKey(me.input.KEY.A, "left");
-      me.input.bindKey(me.input.KEY.D, "right");
+      me.input.bindKey(me.input.KEY.LEFT, "left", true);
+      me.input.bindKey(me.input.KEY.RIGHT, "right", true);
+      
+      me.input.bindKey(me.input.KEY.A, "left", true);
+      me.input.bindKey(me.input.KEY.D, "right", true);
       me.input.bindKey(me.input.KEY.SPACE, "shoot", true);
-      
-      
-      
   },
 
   /**
@@ -50,5 +47,20 @@ game.PlayScreen = me.ScreenObject.extend({
 	 me.input.unbindKey(me.input.KEY.A);
 	 me.input.unbindKey(me.input.KEY.D);
 	 me.input.unbindKey(me.input.KEY.SPACE);
+  },
+  
+  resetPlayerEntity : function() {
+	  
+	  var player = me.game.world.getChildByName("player")[0];
+	  var playerLocationX = me.game.viewport.width / 2 - game.data.playerWidth / 2;
+	  var playerLocationY = me.game.viewport.height - game.data.playerHeight - 20;
+
+	  if (player != null) {
+		  me.game.world.removeChild(player);
+	  }
+
+	  this.player = new game.Player(playerLocationX,playerLocationY);
+	  // Add player to the game world
+	  me.game.world.addChild(this.player, 1);
   }
 });
