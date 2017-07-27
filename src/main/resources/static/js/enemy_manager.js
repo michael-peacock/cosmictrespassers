@@ -11,11 +11,25 @@ game.EnemyManager = me.Container.extend({
   },
   createEnemies : function () {
 	  for (var i = 0; i < this.COLS; i++) {
-	      for (var j = 0; j < this.ROWS; j++) {
-	          this.addChild(me.pool.pull("enemy", i * 64, j * 64));
+          this.addChild(me.pool.pull("invader1", i * 64,  64));
 	          game.data.enemyCount++;
-	      }
 	  }
+
+	  for (var i = 0; i < this.COLS; i++) {
+		  for (var j = 1; j < 3; j++) {
+          this.addChild(me.pool.pull("invader2", i * 64, 64 +  j*64));
+	          game.data.enemyCount++;
+		  }    
+	  }
+
+	  for (var i = 0; i < this.COLS; i++) {
+		  for (var j = 1; j < 3; j++) {
+	          this.addChild(me.pool.pull("invader3", i * 64, 192 +  j*64));
+		          game.data.enemyCount++;
+			  }  
+	  }
+
+	  
 	  this.updateChildBounds();
 	  this.createdEnemies = true;
   },

@@ -1,6 +1,10 @@
 game.resources = [
-    { name: "player", type: "image", src: "data/img/player.png" },
+    { name: "player", type: "image", src: "data/img/retroPlayer.png" },
     { name: "ships", type: "image", src: "data/img/ships.png" },
+    { name: "invader1", type: "image", src: "data/img/invader1.png" },
+    { name: "invader2", type: "image", src: "data/img/invader2.png" },
+    { name: "invader3", type: "image", src: "data/img/invader3.png" },    
+    
     
     /* Sound effects.
      * @example

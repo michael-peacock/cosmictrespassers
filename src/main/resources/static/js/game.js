@@ -55,7 +55,9 @@ var game = {
     	
     	// register the player and enemy objects
     	me.pool.register("player", game.Player);
-    	me.pool.register("enemy", game.Enemy);
+    	me.pool.register("invader1", game.Invader1);
+    	me.pool.register("invader2", game.Invader2);    	
+    	me.pool.register("invader3", game.Invader3);        	
     	
     	// register laser
     	me.pool.register("laser", game.Laser);
