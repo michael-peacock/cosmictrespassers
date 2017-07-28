@@ -10,7 +10,10 @@ game.EnemyManager = me.Container.extend({
 
   },
   createEnemies : function () {
+	  // yeah, this is ugly - one row of invader 1
+	  // 2 rows each of invader 2 and invader 3 
 	  for (var i = 0; i < this.COLS; i++) {
+
           this.addChild(me.pool.pull("invader1", i * 64,  64));
 	          game.data.enemyCount++;
 	  }
@@ -57,12 +60,14 @@ game.EnemyManager = me.Container.extend({
 	},
 
 	update : function (time) {
-		// this is the check for the win condition
-		// triple = ftw!
+		// this is the check for new wave condition
 		if (this.children.length === 0 && this.createdEnemies) {
 	        game.playScreen.reset();
 	        game.data.enemyVelocity += 5;
 	    }
+		
+		
+		
 	    this._super(me.Container, "update", [time]);
 	    this.updateChildBounds();
 	},	
@@ -72,7 +77,7 @@ game.EnemyManager = me.Container.extend({
 	},
 	removeChildNow : function (child) {
 	    this._super(me.Container, "removeChildNow", [child]);
-        // play the "shoot" audio clip
+        // play the "killed" audio clip
         me.audio.play("invaderkilled");
 	    this.updateChildBounds();
 	}

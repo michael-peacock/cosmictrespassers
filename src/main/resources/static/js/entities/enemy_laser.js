@@ -35,8 +35,9 @@ game.EnemyLaser = me.Entity.extend({
             me.game.world.removeChild(this);
             game.playScreen.resetPlayerEntity();
             game.data.playerLives--;
-            return false;
+            return true;
         }
+        return false;
     }    
 });
 

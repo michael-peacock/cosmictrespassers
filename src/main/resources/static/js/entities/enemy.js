@@ -51,7 +51,7 @@ game.Invader2 = me.Entity.extend({
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
 		    
-		    var randomInt = this.getRandomInt(1,1000);
+		    var randomInt = common.functions.getRandomInt(1,1000);
 		    
 	        
 		    if (randomInt == 50) {
@@ -64,10 +64,8 @@ game.Invader2 = me.Entity.extend({
 		    this.body.update();
 
 		    return true;
-		},
-		getRandomInt: function (min, max) {
-		    return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
+
 	});
 
 game.Invader3 = me.Entity.extend({
