@@ -53,7 +53,7 @@ game.PlayScreen = me.ScreenObject.extend({
 	  
 	  var player = me.game.world.getChildByName("player")[0];
 	  var playerLocationX = me.game.viewport.width / 2 - game.data.playerWidth / 2;
-	  var playerLocationY = me.game.viewport.height - game.data.playerHeight - 20;
+	  var playerLocationY = me.game.viewport.height - game.data.playerHeight - 50;
 
 	  if (player != null) {
 		  me.game.world.removeChild(player);
