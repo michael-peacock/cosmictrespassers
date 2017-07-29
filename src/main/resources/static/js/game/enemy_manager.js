@@ -60,13 +60,22 @@ game.EnemyManager = me.Container.extend({
 	},
 
 	update : function (time) {
+
 		// this is the check for new wave condition
 		if (this.children.length === 0 && this.createdEnemies) {
 	        game.playScreen.reset();
 	        game.data.enemyVelocity += 5;
 	    }
 		
-		
+		if (this.children.length > 0 && this.createdEnemies) {
+			
+			var childIndex = common.functions.getRandomInt(0,this.children.length -1);
+			var theChild = this.getChildAt(childIndex);
+			var randomInt = common.functions.getRandomInt(1,1000);
+			if (randomInt > 900) {
+			    me.game.world.addChild(me.pool.pull("enemyLaser", theChild._absPos.x + game.EnemyLaser.width, theChild._absPos.y + game.EnemyLaser.height));
+			}	
+		}
 		
 	    this._super(me.Container, "update", [time]);
 	    this.updateChildBounds();

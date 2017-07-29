@@ -10,6 +10,8 @@ game.HUD.Container = me.Container.extend({
     init: function() {
         // call the constructor
         this._super(me.Container, "init");
+        
+        this.anchorPoint.set(0, 0);
 
         // persistent across level change
         this.isPersistent = true;
@@ -24,31 +26,24 @@ game.HUD.Container = me.Container.extend({
         this.name = "HUD";
 
         // add our child score object 
-        this.addChild(new game.HUD.ScoreItem(-5, -25));
+        this.addChild(new game.HUD.ScoreItem(100, 20));
         // add our child enemy count object 
-        this.addChild(new game.HUD.EnemyCount(-5, -5));
-        this.addChild(new game.HUD.WaveCount(-200, -5));
+        this.addChild(new game.HUD.EnemyCount(300, 20));
+        this.addChild(new game.HUD.WaveCount(500, 20));
     }
 });
+
 
 game.HUD.ScoreItem = me.Renderable.extend({
     /**
      * constructor
      */
     init: function(x, y) {
-        this.relative = new me.Vector2d(x, y);
-
-        // call the super constructor
-        // (size does not matter here)
-        this._super(me.Renderable, "init", [
-            me.game.viewport.width + x,
-            me.game.viewport.height + y,
-            10,
-            10
-        ]);
+        this._super(me.Renderable, "init", [x,y,10,10]);
 
         // create a font
-        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'), 0.50, "right", "bottom");
+        
+        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
 
         // local copy of the global score
         this.score = -1;
@@ -58,11 +53,7 @@ game.HUD.ScoreItem = me.Renderable.extend({
      * update function
      */
     update : function (/*dt*/) {
-        this.pos.x = me.game.viewport.width + this.relative.x;
-        this.pos.y = me.game.viewport.height + this.relative.y;
 
-        // we don't draw anything fancy here, so just
-        // return true if the score has been updated
         if (this.score !== game.data.score) {
             this.score = game.data.score;
             return true;
@@ -74,8 +65,8 @@ game.HUD.ScoreItem = me.Renderable.extend({
      * draw the score
      */
     draw : function (renderer) {
-    	this.font.set("right");
-        this.font.draw (renderer, "Score: " + game.data.score, this.pos.x, this.pos.y);
+    	
+        this.font.draw(renderer, "Score: " + game.data.score, this.pos.x, this.pos.y);
     }
 
 });
@@ -85,21 +76,12 @@ game.HUD.EnemyCount = me.Renderable.extend({
      * constructor
      */
     init: function(x, y) {
-        this.relative = new me.Vector2d(x, y);
-
-        // call the super constructor
-        // (size does not matter here)
-        this._super(me.Renderable, "init", [
-            me.game.viewport.width + x,
-            me.game.viewport.height + y,
-            10,
-            10
-        ]);
+        this._super(me.Renderable, "init", [x,y,10,10]);
 
         // create a font
-        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'), 0.50, "right", "bottom");
-
-        // local copy of the global score
+        
+        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
+ 
         this.enemyCount = -1;
     },
 
@@ -107,13 +89,9 @@ game.HUD.EnemyCount = me.Renderable.extend({
      * update function
      */
     update : function (/*dt*/) {
-        this.pos.x = me.game.viewport.width + this.relative.x;
-        this.pos.y = me.game.viewport.height + this.relative.y;
 
-        // we don't draw anything fancy here, so just
-        // return true if the score has been updated
-        if (this.enemyCount !== game.data.enemyCount) {
-            this.enemyCount = game.data.enemyCount;
+        if (this.score !== game.data.enemyCount) {
+            this.score = game.data.enemyCount;
             return true;
         }
         return false;
@@ -123,32 +101,21 @@ game.HUD.EnemyCount = me.Renderable.extend({
      * draw the score
      */
     draw : function (renderer) {
-    	this.font.set("right");
-        this.font.draw (renderer, "Enemies: " + game.data.enemyCount, this.pos.x, this.pos.y);
+    	
+        this.font.draw(renderer, "Enemies: " + game.data.enemyCount, this.pos.x, this.pos.y);
     }
 
 });
+
 
 game.HUD.WaveCount = me.Renderable.extend({
     /**
      * constructor
      */
     init: function(x, y) {
-        this.relative = new me.Vector2d(x, y);
-
-        // call the super constructor
-        // (size does not matter here)
-        this._super(me.Renderable, "init", [
-            me.game.viewport.width + x,
-            me.game.viewport.height + y,
-            10,
-            10
-        ]);
-
-        // create a font
-        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'), 0.50, "right", "bottom");
-
-        // local copy of the global score
+        this._super(me.Renderable, "init", [x,y,10,10]);
+        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
+        
         this.waveCount = -1;
     },
 
@@ -156,8 +123,6 @@ game.HUD.WaveCount = me.Renderable.extend({
      * update function
      */
     update : function (/*dt*/) {
-        this.pos.x = me.game.viewport.width + this.relative.x;
-        this.pos.y = me.game.viewport.height + this.relative.y;
 
         // we don't draw anything fancy here, so just
         // return true if the score has been updated
@@ -172,7 +137,6 @@ game.HUD.WaveCount = me.Renderable.extend({
      * draw the score
      */
     draw : function (renderer) {
-    	this.font.set("right");
         this.font.draw (renderer, "Wave: " + game.data.waveCount, this.pos.x, this.pos.y);
     }
 
