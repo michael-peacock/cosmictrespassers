@@ -72,7 +72,7 @@ game.EnemyManager = me.Container.extend({
 			var childIndex = common.functions.getRandomInt(0,this.children.length -1);
 			var theChild = this.getChildAt(childIndex);
 			var randomInt = common.functions.getRandomInt(1,1000);
-			if (randomInt > 900) {
+			if (randomInt > 975) {
 			    me.game.world.addChild(me.pool.pull("enemyLaser", theChild._absPos.x + game.EnemyLaser.width, theChild._absPos.y + game.EnemyLaser.height));
 			}	
 		}
@@ -85,9 +85,11 @@ game.EnemyManager = me.Container.extend({
 	    me.timer.clearInterval(this.timer);
 	},
 	removeChildNow : function (child) {
-	    this._super(me.Container, "removeChildNow", [child]);
-        // play the "killed" audio clip
-        me.audio.play("invaderkilled");
+		console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
+		me.audio.play("invaderkilled");
+	    game.data.score += child.pointValue;
+        
+		this._super(me.Container, "removeChildNow", [child]);
 	    this.updateChildBounds();
 	}
 });

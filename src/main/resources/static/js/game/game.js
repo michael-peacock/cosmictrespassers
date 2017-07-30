@@ -61,18 +61,20 @@ var game = {
     	me.pool.register("player", game.Player);
     	me.pool.register("invader1", game.Invader1);
     	me.pool.register("invader2", game.Invader2);    	
-    	me.pool.register("invader3", game.Invader3);        	
+    	me.pool.register("invader3", game.Invader3);    
+    	me.pool.register("mothership", game.MotherShip, true);    
     	
     	// register laser
     	me.pool.register("laser", game.Laser);
     	me.pool.register("enemyLaser", game.EnemyLaser);
-
     	
         // set the "Play/Ingame" Screen Object
+        this.titleScreen = new game.TitleScreen();
         this.playScreen = new game.PlayScreen();
+        me.state.set(me.state.MENU, this.titleScreen);
         me.state.set(me.state.PLAY, this.playScreen);
 
         // start the game
-        me.state.change(me.state.PLAY);
+        me.state.change(me.state.MENU);
     }
 };
