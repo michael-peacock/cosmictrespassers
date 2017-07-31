@@ -3,7 +3,7 @@ game.PlayScreen = me.ScreenObject.extend({
   // check win/loss condition
 	checkIfLoss : function (y) {
 	    if (y >= this.player.pos.y) {
-	       this.reset();
+	    	me.state.change(me.state.GAME_END);
 	    }
 	},	
   /**
@@ -21,7 +21,6 @@ game.PlayScreen = me.ScreenObject.extend({
       me.game.world.addChild(this.HUD);	  
       
       this.resetPlayerEntity();
-      
       // enemy
       this.enemyManager = new game.EnemyManager();
       this.enemyManager.createEnemies();

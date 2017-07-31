@@ -9,7 +9,7 @@ game.Player = me.Sprite.extend({
       this.velx = 450;
       this.maxX = me.game.viewport.width - this.width;
       
-      //this.body.collisionType = me.collision.types.PLAYER_OBJECT;
+      this.body.collisionType = me.collision.types.PLAYER_OBJECT;
   },
   update : function (time) {
 	    this._super(me.Sprite, "update", [time]);

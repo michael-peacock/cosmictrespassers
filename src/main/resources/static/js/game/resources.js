@@ -4,7 +4,8 @@ game.resources = [
     { name: "invader1", type: "image", src: "data/img/invader1.png" },
     { name: "invader2", type: "image", src: "data/img/invader2.png" },
     { name: "invader3", type: "image", src: "data/img/invader3.png" },
-    { name: "mothership", type: "image", src: "data/img/mothership.png" },    
+    { name: "mothership", type: "image", src: "data/img/mothership.png" },
+    { name: "whiteLine", type: "image", src: "data/img/line.png" },    
     { name: "title_screen", type: "image", src: "data/img/title_screen.png" },
     { name: "invader_explosion", type: "image", src: "data/img/invader_explosion.png" },
     

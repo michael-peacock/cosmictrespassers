@@ -62,7 +62,7 @@ game.EnemyManager = me.Container.extend({
 	update : function (time) {
 
 		// this is the check for new wave condition
-		if (this.children.length === 0 && this.createdEnemies) {
+		if (this.children.length === 0 && this.createdEnemies ) {
 	        game.playScreen.reset();
 	        game.data.enemyVelocity += 5;
 	    }
@@ -85,11 +85,58 @@ game.EnemyManager = me.Container.extend({
 	    me.timer.clearInterval(this.timer);
 	},
 	removeChildNow : function (child) {
+		
 		console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
-		me.audio.play("invaderkilled");
-	    game.data.score += child.pointValue;
+		if (me.state.isCurrent(me.state.PLAY)) {
+			me.audio.play("invaderkilled");
+		    game.data.score += child.pointValue;
+		}
         
 		this._super(me.Container, "removeChildNow", [child]);
 	    this.updateChildBounds();
+		
 	}
 });
+
+game.MothershipManager = me.Container.extend({
+	  init : function () {
+	      this._super(me.Container, "init", [0, 16, me.game.viewport.width, 12 ]);
+	      this.vel =  0;
+	      this.enemyManager = null;
+	  },
+	  createMotherShip : function () {
+		  
+		  while (this.enemyManager.children.length > 0 && this.enemyManager.createdEnemies) {
+			  
+		  
+		  // wait a random amount of time between 1 - 3 sec
+		  var motherShip = new game.MotherShip(0,16);
+		  motherShip.body.setVelocity(25, 0);
+		  this.addChild(motherShip, 0,16);
+
+		  }
+		  this.updateChildBounds();
+	  },
+	  onActivateEvent : function () {
+		    var _this = this;
+		    this.timer = me.timer.setInterval(function () {}, 1000);
+		},
+
+	   update : function (time) {
+			
+		    this._super(me.Container, "update", [time]);
+		    this.updateChildBounds();
+		},	
+		
+		onDeactivateEvent : function () {
+		    me.timer.clearInterval(this.timer);
+		},
+		removeChildNow : function (child) {
+			console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
+			me.audio.play("invaderkilled");
+		    game.data.score += child.pointValue;
+	        
+			this._super(me.Container, "removeChildNow", [child]);
+		    this.updateChildBounds();
+		}
+	});

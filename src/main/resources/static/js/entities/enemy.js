@@ -10,19 +10,13 @@ game.Invader1 = me.Entity.extend({
    this._super(me.Entity, "init", [x, y, settings]);
    this.pointValue = settings.pointValue;
       
-   this.chooseShipImage();
+   this.renderable.addAnimation("idle", [0,1], 500);
+   this.renderable.setCurrentAnimation("idle");
    this.body.setVelocity(0, 0);
    this.body.collisionType = me.collision.types.ENEMY_OBJECT;
 
    
   },
-
-  chooseShipImage: function () {
-	    var frame = ~~(Math.random() * 3);
-	    this.renderable.addAnimation("idle", [0,1], 500);
-	    this.renderable.setCurrentAnimation("idle");
-  }, 
-
   update : function (time) {
 	    this._super(me.Entity, "update", [time]);
 
@@ -45,17 +39,13 @@ game.Invader2 = me.Entity.extend({
 	   this._super(me.Entity, "init", [x, y, settings]);
 	   this.pointValue = settings.pointValue;
 	      
-	   this.chooseShipImage();
+	   this.renderable.addAnimation("idle", [0,1], 500);
+       this.renderable.setCurrentAnimation("idle");
 	   this.body.setVelocity(0, 0);
 	   this.body.collisionType = me.collision.types.ENEMY_OBJECT;
 
 	   
 	  },
-
-	  chooseShipImage: function () {
-		    this.renderable.addAnimation("idle", [0,1], 500);
-		    this.renderable.setCurrentAnimation("idle");
-	  }, 
 
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
@@ -79,18 +69,13 @@ game.Invader3 = me.Entity.extend({
        this._super(me.Entity, "init", [x, y, settings]);
 	   this.pointValue = settings.pointValue;
 	   
-	   this.chooseShipImage();
+	   this.renderable.addAnimation("idle", [0,1], 500);
+       this.renderable.setCurrentAnimation("idle");
 	   this.body.setVelocity(0, 0);
 	   this.body.collisionType = me.collision.types.ENEMY_OBJECT;
 
 	   
 	  },
-
-	  chooseShipImage: function () {
-		    this.renderable.addAnimation("idle", [0,1], 500);
-		    this.renderable.setCurrentAnimation("idle");
-	  }, 
-
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
 

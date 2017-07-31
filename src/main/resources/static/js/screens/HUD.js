@@ -30,6 +30,8 @@ game.HUD.Container = me.Container.extend({
         // add our child enemy count object 
         this.addChild(new game.HUD.EnemyCount(300, 20));
         this.addChild(new game.HUD.WaveCount(500, 20));
+        this.addChild(new game.HUD.PlayerLifeCounter(100, me.game.viewport.height - 40));
+        
     }
 });
 
@@ -138,6 +140,45 @@ game.HUD.WaveCount = me.Renderable.extend({
      */
     draw : function (renderer) {
         this.font.draw (renderer, "Wave: " + game.data.waveCount, this.pos.x, this.pos.y);
+    }
+
+});
+
+game.HUD.PlayerLifeCounter = me.Renderable.extend({
+    /**
+     * constructor
+     */
+    init: function(x, y) {
+        this._super(me.Renderable, "init", [x,y,10,10]);
+
+        // create a font
+        
+        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
+
+        // local copy of the global score
+        this.playerLives = -1;
+    },
+
+    /**
+     * update function
+     */
+    update : function (/*dt*/) {
+
+        if (this.playerLives !== game.data.playerLives) {
+            this.playerLives = game.data.playerLives;
+            return true;
+        }
+        return false;
+    },
+
+    /**
+     * draw the score
+     */
+    draw : function (renderer) {
+    	
+        this.font.draw(renderer, "Lives: " + game.data.playerLives, this.pos.x, this.pos.y);
+       
+
     }
 
 });

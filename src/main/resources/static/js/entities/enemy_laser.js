@@ -33,8 +33,14 @@ game.EnemyLaser = me.Entity.extend({
     onCollision : function (res, other) {
         if (other.body.collisionType === me.collision.types.PLAYER_OBJECT) {
             me.game.world.removeChild(this);
-            game.playScreen.resetPlayerEntity();
             game.data.playerLives--;
+            
+            //if (game.data.playerLives == 0) {
+            //	me.state.change(me.state.SCORE);
+            //} 
+            //else {
+                game.playScreen.resetPlayerEntity();
+            //}
             return true;
         }
         return false;

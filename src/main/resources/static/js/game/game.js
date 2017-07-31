@@ -3,6 +3,19 @@
 var game = {
 
     // an object where to store game information
+    defaultData : {
+        // score
+        score : 0,
+        enemyCount : 0,
+        waveCount : 0,
+        enemyColumns : 9,
+        enemyRows : 5,
+        enemyVelocity : 16,
+        playerWidth: 26,
+        playerHeight:16,
+        playerLives:2
+        	
+    },
     data : {
         // score
         score : 0,
@@ -13,7 +26,7 @@ var game = {
         enemyVelocity : 16,
         playerWidth: 26,
         playerHeight:16,
-        playerLives:3,
+        playerLives:2
         	
     },
 
@@ -68,13 +81,27 @@ var game = {
     	me.pool.register("laser", game.Laser);
     	me.pool.register("enemyLaser", game.EnemyLaser);
     	
-        // set the "Play/Ingame" Screen Object
-        this.titleScreen = new game.TitleScreen();
+        // set Screen Objects
+        
+        
+       // this.gameEndScreen = new game.GameEndScreen();
+       // me.state.set(me.state.SCORE, this.gameEndScreen);
+        
         this.playScreen = new game.PlayScreen();
-        me.state.set(me.state.MENU, this.titleScreen);
         me.state.set(me.state.PLAY, this.playScreen);
+
+        this.titleScreen = new game.TitleScreen();
+        me.state.set(me.state.MENU, this.titleScreen);
 
         // start the game
         me.state.change(me.state.MENU);
+        
+    },
+    newGame : function () {
+    	
+    	this.data = this.defaultData;
+        // start the game
+        this.loaded();
+    	
     }
 };
