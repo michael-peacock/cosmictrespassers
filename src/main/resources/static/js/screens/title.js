@@ -6,6 +6,8 @@ game.TitleScreen = me.ScreenObject.extend({
     // title screen
     var backgroundImage = new me.Sprite(0, 0, {
             image: me.loader.getImage('title_screen'),
+            framewidth:800,
+            frameheight:600
         }
     );
 

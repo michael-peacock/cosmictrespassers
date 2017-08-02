@@ -3,7 +3,7 @@ game.PlayScreen = me.ScreenObject.extend({
   // check win/loss condition
 	checkIfLoss : function (y) {
 	    if (y >= this.player.pos.y) {
-	    	me.state.change(me.state.GAME_END);
+	    	me.state.change(me.state.GAMEOVER);
 	    }
 	},	
   /**

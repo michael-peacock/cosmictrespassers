@@ -35,12 +35,12 @@ game.EnemyLaser = me.Entity.extend({
             me.game.world.removeChild(this);
             game.data.playerLives--;
             
-            //if (game.data.playerLives == 0) {
-            //	me.state.change(me.state.SCORE);
-            //} 
-            //else {
+            if (game.data.playerLives == 0) {
+             me.state.change(me.state.GAMEOVER);
+            } 
+            else {
                 game.playScreen.resetPlayerEntity();
-            //}
+            }
             return true;
         }
         return false;

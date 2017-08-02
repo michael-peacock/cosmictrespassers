@@ -62,9 +62,12 @@ var game = {
 
         // Load the resources.
         me.loader.preload(game.resources);
+        
+    	this.titleScreen = new game.TitleScreen();
+        me.state.set(me.state.MENU,this.titleScreen );
 
         // Initialize melonJS and display a loading screen.
-        me.state.change(me.state.LOADING);        
+        me.state.change(me.state.MENU);        
     },
 
     // Run on game resources loaded.
@@ -82,16 +85,14 @@ var game = {
     	me.pool.register("enemyLaser", game.EnemyLaser);
     	
         // set Screen Objects
-        
-        
-       // this.gameEndScreen = new game.GameEndScreen();
-       // me.state.set(me.state.SCORE, this.gameEndScreen);
-        
-        this.playScreen = new game.PlayScreen();
-        me.state.set(me.state.PLAY, this.playScreen);
+    	
+    	this.gameOverScreen = new game.GameEndScreen();
+    	this.playScreen = new game.PlayScreen();
 
-        this.titleScreen = new game.TitleScreen();
-        me.state.set(me.state.MENU, this.titleScreen);
+    	
+        me.state.set(me.state.GAMEOVER, this.gameOverScreen);
+        me.state.set(me.state.PLAY,this.playScreen );
+
 
         // start the game
         me.state.change(me.state.MENU);
