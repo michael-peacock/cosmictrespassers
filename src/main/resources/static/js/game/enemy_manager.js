@@ -6,7 +6,7 @@ game.EnemyManager = me.Container.extend({
       ]);
       this.COLS = game.data.enemyColumns;
       this.ROWS = game.data.enemyRows;
-      this.vel =  game.data.enemyVelocity;
+      this.vel =  game.data.initialEnemyVelocity + game.data.waveCount * 5;
 
   },
   createEnemies : function () {
@@ -64,7 +64,7 @@ game.EnemyManager = me.Container.extend({
 		// this is the check for new wave condition
 		if (this.children.length === 0 && this.createdEnemies ) {
 	        game.playScreen.reset();
-	        game.data.enemyVelocity += 5;
+	        game.data.initialEnemyVelocity += 5;
 	    }
 		
 		if (this.children.length > 0 && this.createdEnemies) {
@@ -73,7 +73,11 @@ game.EnemyManager = me.Container.extend({
 			var theChild = this.getChildAt(childIndex);
 			var randomInt = common.functions.getRandomInt(1,1000);
 			if (randomInt > 975) {
-			    me.game.world.addChild(me.pool.pull("enemyLaser", theChild._absPos.x + game.EnemyLaser.width, theChild._absPos.y + game.EnemyLaser.height));
+			    me.game.world.addChild(
+			        me.pool.pull("enemyLaser", 
+			    		theChild._absPos.x + game.EnemyLaser.width, 
+			    		theChild._absPos.y + game.EnemyLaser.height)
+			    	);
 			}	
 		}
 		
@@ -88,6 +92,7 @@ game.EnemyManager = me.Container.extend({
 		
 		console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
 		if (me.state.isCurrent(me.state.PLAY)) {
+			this.explodeEnemy(child._absPos.x , child._absPos.y )
 			me.audio.play("invaderkilled");
 		    game.data.score += child.pointValue;
 		}
@@ -95,7 +100,33 @@ game.EnemyManager = me.Container.extend({
 		this._super(me.Container, "removeChildNow", [child]);
 	    this.updateChildBounds();
 		
+	}, 
+	explodeEnemy: function(x,y) {
+		var image = me.loader.getImage('invader_explosion');
+		var emitter = new me.ParticleEmitter(x, y, {
+		    image: image,
+		    width: 10,
+		    totalParticles: 100,
+		    angle: 0,
+		    angleVariation: 6.283185307179586,
+		    minLife: 500,
+		    maxLife: 1000,
+		    speed: 7.11246200607903,
+		    speedVariation: 3.55623100303951,
+		    minStartScale: 0.01,
+		    maxStartScale: 0.638297872340426
+		});
+		emitter.name = 'explosion';
+		emitter.pos.z = 11;
+		me.game.world.addChild(emitter);
+		// Launch all particles one time and stop, like a explosion
+		emitter.burstParticles();
+
+		me.timer.setTimeout(function () {
+			me.game.world.removeChild(emitter);		
+		}, 500);
 	}
+	
 });
 
 game.MothershipManager = me.Container.extend({

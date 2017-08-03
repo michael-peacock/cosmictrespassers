@@ -61,6 +61,6 @@ game.GameEndScreen = me.ScreenObject.extend({
   onDestroyEvent : function () {
     me.input.unbindKey(me.input.KEY.ENTER);
     me.input.unbindPointer(me.input.pointer.LEFT);
-    me.event.unsubscribe(this.handler);
+    //me.event.unsubscribe(this.handler);
   }
 });

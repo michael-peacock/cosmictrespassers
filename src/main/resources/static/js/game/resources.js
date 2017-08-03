@@ -7,7 +7,9 @@ game.resources = [
     { name: "mothership", type: "image", src: "data/img/mothership.png" },
     { name: "whiteLine", type: "image", src: "data/img/line.png" },    
     { name: "title_screen", type: "image", src: "data/img/title_screen.png" },
-    { name: "invader_explosion", type: "image", src: "data/img/invader_explosion.png" },
+    { name : "invader_explosion", src : "data/img/explosion.png", type : "image" },    
+    { name : "player_explosion", src : "data/img/player_explosion.png", type : "image" },    
+    
     
     
     /* Sound effects.

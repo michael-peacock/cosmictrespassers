@@ -55,11 +55,34 @@ game.PlayScreen = me.ScreenObject.extend({
 	  var playerLocationY = me.game.viewport.height - game.data.playerHeight - 50;
 
 	  if (player != null) {
+		  this.showPlayerDieEffect(playerLocationX,playerLocationY);
 		  me.game.world.removeChild(player);
+		  // play an animation over player?
 	  }
 
 	  this.player = new game.Player(playerLocationX,playerLocationY);
 	  // Add player to the game world
 	  me.game.world.addChild(this.player, 1);
-  }
+  }, 
+  showPlayerDieEffect: function(x,y) {
+		var image = me.loader.getImage('player_explosion');
+		var emitter = new me.ParticleEmitter(x, y, {
+		    image: image,
+		    angle: 1.55647295603385,
+		    angleVariation: 1.54692404219315,
+		    maxLife: 2000,
+		    speed: 3.28267477203647,
+		    minStartScale: 0.227963525835866,
+		    maxStartScale: 0.683890577507599
+		});
+		emitter.name = 'explosion';
+		emitter.pos.z = 11;
+		me.game.world.addChild(emitter);
+		// Launch all particles one time and stop, like a explosion
+		emitter.streamParticles();
+
+		me.timer.setTimeout(function () {
+			me.game.world.removeChild(emitter);		
+		}, 500);
+	}
 });

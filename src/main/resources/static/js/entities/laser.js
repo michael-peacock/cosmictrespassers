@@ -36,8 +36,10 @@ game.Laser = me.Entity.extend({
             me.game.world.removeChild(this);
             game.playScreen.enemyManager.removeChild(other);
             game.data.enemyCount--;
+            //game.playScreen.enemyManager.vel += 2;
             return true;
         }
+        
         return false;
     }    
 });

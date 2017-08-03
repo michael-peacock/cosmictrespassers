@@ -32,10 +32,12 @@ game.EnemyLaser = me.Entity.extend({
     },
     onCollision : function (res, other) {
         if (other.body.collisionType === me.collision.types.PLAYER_OBJECT) {
+	        // play the "shoot" audio clip
+	        me.audio.play("explosion");
             me.game.world.removeChild(this);
             game.data.playerLives--;
             
-            if (game.data.playerLives == 0) {
+            if (game.data.playerLives >= 0) {
              me.state.change(me.state.GAMEOVER);
             } 
             else {
