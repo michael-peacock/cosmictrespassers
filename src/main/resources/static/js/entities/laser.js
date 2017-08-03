@@ -36,7 +36,14 @@ game.Laser = me.Entity.extend({
             me.game.world.removeChild(this);
             game.playScreen.enemyManager.removeChild(other);
             game.data.enemyCount--;
-            //game.playScreen.enemyManager.vel += 2;
+            // this is evil - the enemies move faster as you shoot them
+            //game.playScreen.enemyManager.vel += 5;
+            return true;
+        }
+
+        if (other.body.collisionType === me.collision.types.COLLECTABLE_OBJECT) {
+            me.game.world.removeChild(this);
+            game.playScreen.motherShipManager.removeChild(other);
             return true;
         }
         

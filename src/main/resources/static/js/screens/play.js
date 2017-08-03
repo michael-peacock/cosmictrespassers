@@ -26,6 +26,10 @@ game.PlayScreen = me.ScreenObject.extend({
       this.enemyManager.createEnemies();
       me.game.world.addChild(this.enemyManager, 2);
       
+      this.motherShipManager = new game.MothershipManager();
+      me.game.world.addChild(this.motherShipManager, 2);
+      
+      
       // key bindings
       me.input.bindKey(me.input.KEY.LEFT, "left", true);
       me.input.bindKey(me.input.KEY.RIGHT, "right", true);
@@ -33,6 +37,8 @@ game.PlayScreen = me.ScreenObject.extend({
       me.input.bindKey(me.input.KEY.A, "left", true);
       me.input.bindKey(me.input.KEY.D, "right", true);
       me.input.bindKey(me.input.KEY.SPACE, "shoot", true);
+      
+
   },
 
   /**
@@ -55,9 +61,13 @@ game.PlayScreen = me.ScreenObject.extend({
 	  var playerLocationY = me.game.viewport.height - game.data.playerHeight - 50;
 
 	  if (player != null) {
+		  // TODO: need to get the x,y coordinates of the current player
+		  // object before removing it, then play the die effect there
+		  
+		  me.game.world.removeChild(this.player);
+		  
 		  this.showPlayerDieEffect(playerLocationX,playerLocationY);
-		  me.game.world.removeChild(player);
-		  // play an animation over player?
+		  
 	  }
 
 	  this.player = new game.Player(playerLocationX,playerLocationY);
@@ -68,12 +78,15 @@ game.PlayScreen = me.ScreenObject.extend({
 		var image = me.loader.getImage('player_explosion');
 		var emitter = new me.ParticleEmitter(x, y, {
 		    image: image,
-		    angle: 1.55647295603385,
-		    angleVariation: 1.54692404219315,
-		    maxLife: 2000,
-		    speed: 3.28267477203647,
-		    minStartScale: 0.227963525835866,
-		    maxStartScale: 0.683890577507599
+		    totalParticles: 117,
+		    angle: 1.5707963267949,
+		    angleVariation: 1.55701741164757,
+		    maxLife: 1000,
+		    speed: 3.28947368421053,
+		    speedVariation: 3.28947368421053,
+		    maxRotation: 0.744061417955478,
+		    minStartScale: 0.328947368421053,
+		    maxParticles: 15
 		});
 		emitter.name = 'explosion';
 		emitter.pos.z = 11;
@@ -83,6 +96,6 @@ game.PlayScreen = me.ScreenObject.extend({
 
 		me.timer.setTimeout(function () {
 			me.game.world.removeChild(emitter);		
-		}, 500);
+		}, 1000);
 	}
 });

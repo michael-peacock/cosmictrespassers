@@ -40,7 +40,7 @@ game.EnemyManager = me.Container.extend({
 	    var _this = this;
 	    this.timer = me.timer.setInterval(function () {
 	        var bounds = _this.childBounds;
-
+	        
 	        if ((_this.vel > 0 && (bounds.right + _this.vel) >= me.game.viewport.width) ||
 	            (_this.vel < 0 && (bounds.left + _this.vel) <= 0)) {
 	            _this.vel *= -1;
@@ -57,6 +57,7 @@ game.EnemyManager = me.Container.extend({
 	            _this.pos.x += _this.vel;
 	        }
 	    }, 1000);
+	    	    
 	},
 
 	update : function (time) {
@@ -133,24 +134,17 @@ game.MothershipManager = me.Container.extend({
 	  init : function () {
 	      this._super(me.Container, "init", [0, 16, me.game.viewport.width, 12 ]);
 	      this.vel =  0;
-	      this.enemyManager = null;
 	  },
-	  createMotherShip : function () {
-		  
-		  while (this.enemyManager.children.length > 0 && this.enemyManager.createdEnemies) {
-			  
-		  
-		  // wait a random amount of time between 1 - 3 sec
-		  var motherShip = new game.MotherShip(0,16);
-		  motherShip.body.setVelocity(25, 0);
-		  this.addChild(motherShip, 0,16);
 
-		  }
-		  this.updateChildBounds();
-	  },
 	  onActivateEvent : function () {
 		    var _this = this;
-		    this.timer = me.timer.setInterval(function () {}, 1000);
+	    	var msDelay = common.functions.getRandomInt(3000,5000);
+	    	  
+	  		var msTimer = 	me.timer.setInterval(function () {
+	  			_this.motherShip = new game.MotherShip(10, 70);
+	  			_this.motherShip.body.setVelocity(3, 0);
+	  			_this.addChild(_this.motherShip);	
+	  			}, msDelay);
 		},
 
 	   update : function (time) {

@@ -91,13 +91,13 @@ game.MotherShip = me.Entity.extend({
 	          image : "mothership",
 	          width : 48,
 	          height : 21,
-	          name : "mothership"
+	          name : "mothership"	          
 	      };
      
        this._super(me.Entity, "init", [x, y, settings]);
 	   this.pointValue = this.getPointValue();
 	   this.body.setVelocity(0, 0);
-	   this.body.collisionType = me.collision.types.ENEMY_OBJECT;
+	   this.body.collisionType = me.collision.types.COLLECTABLE_OBJECT;
 	  },
 
 	  getPointValue: function () {
@@ -107,6 +107,11 @@ game.MotherShip = me.Entity.extend({
 
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
+		    
+	        this.body.vel.x += this.body.accel.x * time / 1000;
+	        if (this.pos.x + this.width >= me.game.viewport.width) {
+	            game.playScreen.motherShipManager.removeChild(this);
+	        }
 
 		    this.body.update();
 
