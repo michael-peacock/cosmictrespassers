@@ -98,6 +98,7 @@ game.MotherShip = me.Entity.extend({
 	   this.pointValue = this.getPointValue();
 	   this.body.setVelocity(0, 0);
 	   this.body.collisionType = me.collision.types.COLLECTABLE_OBJECT;
+	   this.exitingCanvas = 0;
 	  },
 
 	  getPointValue: function () {
@@ -110,6 +111,7 @@ game.MotherShip = me.Entity.extend({
 		    
 	        this.body.vel.x += this.body.accel.x * time / 1000;
 	        if (this.pos.x + this.width >= me.game.viewport.width) {
+	        	this.exitingCanvas = 1;
 	            game.playScreen.motherShipManager.removeChild(this);
 	        }
 

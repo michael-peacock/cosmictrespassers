@@ -134,15 +134,34 @@ game.MothershipManager = me.Container.extend({
 	  init : function () {
 	      this._super(me.Container, "init", [0, 16, me.game.viewport.width, 12 ]);
 	      this.vel =  0;
+		  this.motherShipSettings = {};
 	  },
 
 	  onActivateEvent : function () {
 		    var _this = this;
-	    	var msDelay = common.functions.getRandomInt(3000,5000);
+	    	var msDelay = common.functions.getRandomInt(10000,15000);
 	    	  
 	  		var msTimer = 	me.timer.setInterval(function () {
-	  			_this.motherShip = new game.MotherShip(10, 70);
-	  			_this.motherShip.body.setVelocity(3, 0);
+
+	  			var isLeft = common.functions.getRandomInt(0,1);
+	  			
+	  			if (isLeft) {
+	  				_this.mothershipSettings = {
+	  					xPos : 10,
+	  					yPos : 70,
+	  					xVel : 3
+	  				}
+	  				
+	  			} else {
+	  				_this.mothershipSettings = {
+		  					xPos : me.game.viewport.width,
+		  					yPos : 70,
+		  					xVel : -3
+		  				}
+	  			}
+	  			
+	  			_this.motherShip = new game.MotherShip(_this.mothershipSettings.xPos, _this.mothershipSettings.yPos);
+	  			_this.motherShip.body.setVelocity(_this.mothershipSettings.xVel, 0);
 	  			_this.addChild(_this.motherShip);	
 	  			}, msDelay);
 		},
@@ -158,8 +177,11 @@ game.MothershipManager = me.Container.extend({
 		},
 		removeChildNow : function (child) {
 			console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
-			me.audio.play("invaderkilled");
-		    game.data.score += child.pointValue;
+			
+			if (!child.exitingCanvas) {
+				me.audio.play("invaderkilled");
+				game.data.score += child.pointValue;
+			}
 	        
 			this._super(me.Container, "removeChildNow", [child]);
 		    this.updateChildBounds();
