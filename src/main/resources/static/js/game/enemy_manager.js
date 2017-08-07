@@ -12,7 +12,7 @@ game.EnemyManager = me.Container.extend({
   createEnemies : function () {
 	  // yeah, this is ugly - one row of invader 1
 	  // 2 rows each of invader 2 and invader 3 
-	  for (var i = 0; i < this.COLS; i++) {
+	/*  for (var i = 0; i < this.COLS; i++) {
 
           this.addChild(me.pool.pull("invader1", i * 64,  64));
 	          game.data.enemyCount++;
@@ -24,7 +24,7 @@ game.EnemyManager = me.Container.extend({
 	          game.data.enemyCount++;
 		  }    
 	  }
-
+*/
 	  for (var i = 0; i < this.COLS; i++) {
 		  for (var j = 1; j < 3; j++) {
 	          this.addChild(me.pool.pull("invader3", i * 64, 192 +  j*64));
@@ -92,6 +92,7 @@ game.EnemyManager = me.Container.extend({
 	removeChildNow : function (child) {
 		
 		console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
+		
 		if (me.state.isCurrent(me.state.PLAY)) {
 			this.explodeEnemy(child._absPos.x , child._absPos.y )
 			me.audio.play("invaderkilled");
@@ -122,6 +123,7 @@ game.EnemyManager = me.Container.extend({
 		me.game.world.addChild(emitter);
 		// Launch all particles one time and stop, like a explosion
 		emitter.burstParticles();
+		me.game.world.removeChild(emitter);		
 
 		me.timer.setTimeout(function () {
 			me.game.world.removeChild(emitter);		
@@ -139,7 +141,7 @@ game.MothershipManager = me.Container.extend({
 
 	  onActivateEvent : function () {
 		    var _this = this;
-	    	var msDelay = common.functions.getRandomInt(10000,15000);
+	    	var msDelay = common.functions.getRandomInt(5000,10000);
 	    	  
 	  		var msTimer = 	me.timer.setInterval(function () {
 
@@ -176,14 +178,67 @@ game.MothershipManager = me.Container.extend({
 		    me.timer.clearInterval(this.timer);
 		},
 		removeChildNow : function (child) {
-			console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
+			console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);
 			
 			if (!child.exitingCanvas) {
 				me.audio.play("invaderkilled");
 				game.data.score += child.pointValue;
 			}
+			
+			if (me.state.isCurrent(me.state.PLAY) && !child.exitingCanvas) {
+				this.explodeEnemy(child);
+				me.audio.play("invaderkilled");
+			    game.data.score += child.pointValue;
+			}
 	        
 			this._super(me.Container, "removeChildNow", [child]);
 		    this.updateChildBounds();
-		}
-	});
+		},
+		explodeEnemy: function(child) {
+
+			var posX = child._absPos.x;
+			var posY = child._absPos.y;
+			var points = child.pointValue;
+			
+			var scoreItem = new this.ScoreItem(posX,posY);
+			scoreItem.setValue(points);
+			
+			me.game.world.addChild(scoreItem);
+			me.timer.setTimeout(function () {
+				me.game.world.removeChild(scoreItem);		
+			}, 500);
+		},
+		ScoreItem : me.Renderable.extend({
+		    /**
+		     * constructor
+		     */
+		    init: function(x, y) {
+		        this._super(me.Renderable, "init", [x,y,10,10]);
+
+		        // create a font
+		        
+		        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
+
+		        // local copy of the global score
+		        this.value = -1;
+		    },
+		    setValue : function (val) {
+		    	 this.value = val;
+		    },
+
+		    /**
+		     * update function
+		     */
+		    update : function () {
+		        return false;
+		    },
+
+		    /**
+		     * draw the score
+		     */
+		    draw : function (renderer) {
+		        this.font.draw(renderer, this.value, this.pos.x, this.pos.y);
+		    }
+
+		})
+});

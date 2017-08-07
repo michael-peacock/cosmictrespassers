@@ -2,21 +2,6 @@
 /* Game namespace */
 var game = {
 
-    // an object where to store game information
-    defaultData : {
-        // score
-        score : 0,
-        enemyCount : 0,
-        waveCount : 0,
-        enemyColumns : 9,
-        enemyRows : 5,
-        initialEnemyVelocity : 16,
-        enemyVelocity : 16,
-        playerWidth: 26,
-        playerHeight:16,
-        playerLives:2
-        	
-    },
     data : {
         // score
         score : 0,
@@ -60,13 +45,13 @@ var game = {
         // set and load all resources.
         // (this will also automatically switch to the loading screen)
         me.loader.preload(game.resources, this.loaded.bind(this));
-        
 
         // Load the resources.
         me.loader.preload(game.resources);
         
     	this.titleScreen = new game.TitleScreen();
-        me.state.set(me.state.MENU,this.titleScreen );
+        
+    	me.state.set(me.state.MENU,this.titleScreen);
 
         // Initialize melonJS and display a loading screen.
         me.state.change(me.state.MENU);        
@@ -102,8 +87,17 @@ var game = {
     },
     newGame : function () {
     	
-    	this.data = this.defaultData;
-        // start the game
+    	this.data.score = 0;
+    	this.data.enemyCount = 0;
+    	this.data.waveCount = 0;
+    	this.data.enemyColumns = 9;
+    	this.data.enemyRows = 5;
+    	this.data.initialEnemyVelocity = 16;
+    	this.data.enemyVelocity = 16;
+    	this.data.playerWidth= 26;
+    	this.data.playerHeight=16;
+    	this.data.playerLives=2;
+
         this.loaded();
     	
     }

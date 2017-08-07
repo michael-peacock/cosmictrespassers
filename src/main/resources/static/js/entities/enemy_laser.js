@@ -21,7 +21,7 @@ game.EnemyLaser = me.Entity.extend({
 
     update : function (time) {
         this.body.vel.y += this.body.accel.y * time / 1000;
-        if (this.pos.y + this.height <= 0) {
+        if (this.pos.y + this.height >= me.game.viewport.height) {
             me.game.world.removeChild(this);
         }
 
@@ -41,7 +41,7 @@ game.EnemyLaser = me.Entity.extend({
              me.state.change(me.state.GAMEOVER);
             } 
             else {
-                game.playScreen.resetPlayerEntity();
+                game.playScreen.resetPlayerEntity(false);
             }
             return true;
         }
