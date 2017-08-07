@@ -18,6 +18,7 @@ game.Laser = me.Entity.extend({
             }
         }));
         this.alwaysUpdate = true;
+        this.name = "Laser";
     },
 
     update : function (time) {
@@ -52,4 +53,4 @@ game.Laser = me.Entity.extend({
 });
 
 game.Laser.width = 6;
-game.Laser.height = 28;
+game.Laser.height = 6;

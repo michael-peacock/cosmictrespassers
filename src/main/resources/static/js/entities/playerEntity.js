@@ -17,6 +17,7 @@ game.Player = me.Entity.extend({
 	   
 	  this.body.collisionType = me.collision.types.PLAYER_OBJECT;
 	  this.maxX = me.game.viewport.width - this.width;
+      this.name = "PayerEntity";
 
 
   },
@@ -25,7 +26,7 @@ game.Player = me.Entity.extend({
 	    
 
 	    if (me.input.isKeyPressed("shoot")) {
-	        me.game.world.addChild(me.pool.pull("laser", this.pos.x - game.Laser.width, this.pos.y - game.Laser.height));
+	        me.game.world.addChild(me.pool.pull("laser", this.pos.x + game.data.playerWidth/2 - game.Laser.width, this.pos.y - game.Laser.height));
 	     
 	        // play the "shoot" audio clip
 	        me.audio.play("shoot");

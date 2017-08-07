@@ -13,7 +13,8 @@ var game = {
         enemyVelocity : 16,
         playerWidth: 26,
         playerHeight:16,
-        playerLives:2
+        playerLives:2,
+        gridSize : 64
         	
     },
 
@@ -55,6 +56,7 @@ var game = {
 
         // Initialize melonJS and display a loading screen.
         me.state.change(me.state.MENU);        
+        this.name = "Game";
     },
 
     // Run on game resources loaded.

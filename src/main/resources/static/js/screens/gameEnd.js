@@ -2,6 +2,7 @@ game.GameEndScreen = me.ScreenObject.extend({
   onResetEvent : function () {
     // Game Over Screen
 
+    this.name = "GameEndScreen";
 	me.game.world.addChild(new me.ColorLayer("background", "#000000"), 0);
 	  
 

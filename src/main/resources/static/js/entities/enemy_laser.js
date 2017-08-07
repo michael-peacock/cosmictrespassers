@@ -17,6 +17,7 @@ game.EnemyLaser = me.Entity.extend({
             }
         }));
         this.alwaysUpdate = true;
+        this.name = "EnemyLaser";
     },
 
     update : function (time) {

@@ -1,37 +1,40 @@
 game.EnemyManager = me.Container.extend({
   init : function () {
       this._super(me.Container, "init", [0, 32,
-          this.COLS * 64 - 32,
-          this.ROWS * 64 - 32
+          this.COLS * game.data.gridSize - 32,
+          this.ROWS * game.data.gridSize - 32
       ]);
       this.COLS = game.data.enemyColumns;
       this.ROWS = game.data.enemyRows;
       this.vel =  game.data.initialEnemyVelocity + game.data.waveCount * 5;
+      this.name = "EnemyManager";
 
   },
   createEnemies : function () {
 	  // yeah, this is ugly - one row of invader 1
 	  // 2 rows each of invader 2 and invader 3 
-	/*  for (var i = 0; i < this.COLS; i++) {
+	
+	  for (var i = 0; i < this.COLS; i++) {
 
-          this.addChild(me.pool.pull("invader1", i * 64,  64));
+          this.addChild(me.pool.pull("invader1", i * game.data.gridSize,  game.data.gridSize));
 	          game.data.enemyCount++;
 	  }
 
 	  for (var i = 0; i < this.COLS; i++) {
 		  for (var j = 1; j < 3; j++) {
-          this.addChild(me.pool.pull("invader2", i * 64, 64 +  j*64));
+          this.addChild(me.pool.pull("invader2", i * game.data.gridSize, game.data.gridSize +  j*game.data.gridSize));
 	          game.data.enemyCount++;
 		  }    
 	  }
-*/
+
 	  for (var i = 0; i < this.COLS; i++) {
 		  for (var j = 1; j < 3; j++) {
-	          this.addChild(me.pool.pull("invader3", i * 64, 192 +  j*64));
+	          this.addChild(me.pool.pull("invader3", i * game.data.gridSize, game.data.gridSize * 3 +  j * game.data.gridSize));
 		          game.data.enemyCount++;
 			  }  
 	  }
-
+	  
+      game.data.enemyCount++;
 	  
 	  this.updateChildBounds();
 	  this.createdEnemies = true;
@@ -91,43 +94,22 @@ game.EnemyManager = me.Container.extend({
 	},
 	removeChildNow : function (child) {
 		
-		console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
-		
 		if (me.state.isCurrent(me.state.PLAY)) {
 			this.explodeEnemy(child._absPos.x , child._absPos.y )
 			me.audio.play("invaderkilled");
+			
+			console.log("Removing Enemy: " + child.name + ", Value : " + child.pointValue);
 		    game.data.score += child.pointValue;
+		    
+			this._super(me.Container, "removeChildNow", [child]);
 		}
         
-		this._super(me.Container, "removeChildNow", [child]);
+
 	    this.updateChildBounds();
 		
 	}, 
 	explodeEnemy: function(x,y) {
-		var image = me.loader.getImage('invader_explosion');
-		var emitter = new me.ParticleEmitter(x, y, {
-		    image: image,
-		    width: 10,
-		    totalParticles: 100,
-		    angle: 0,
-		    angleVariation: 6.283185307179586,
-		    minLife: 500,
-		    maxLife: 1000,
-		    speed: 7.11246200607903,
-		    speedVariation: 3.55623100303951,
-		    minStartScale: 0.01,
-		    maxStartScale: 0.638297872340426
-		});
-		emitter.name = 'explosion';
-		emitter.pos.z = 11;
-		me.game.world.addChild(emitter);
-		// Launch all particles one time and stop, like a explosion
-		emitter.burstParticles();
-		me.game.world.removeChild(emitter);		
-
-		me.timer.setTimeout(function () {
-			me.game.world.removeChild(emitter);		
-		}, 500);
+		game.enemyExplosionEmitter.launch(x,y);
 	}
 	
 });
@@ -178,14 +160,15 @@ game.MothershipManager = me.Container.extend({
 		    me.timer.clearInterval(this.timer);
 		},
 		removeChildNow : function (child) {
-			console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);
 			
-			if (!child.exitingCanvas) {
+			if (!child.exitingCanvas && game.data.playerLives > 0) {
+				console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);				
 				me.audio.play("invaderkilled");
 				game.data.score += child.pointValue;
 			}
 			
-			if (me.state.isCurrent(me.state.PLAY) && !child.exitingCanvas) {
+			if (me.state.isCurrent(me.state.PLAY) && !child.exitingCanvas && game.data.playerLives > 0) {
+				console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);
 				this.explodeEnemy(child);
 				me.audio.play("invaderkilled");
 			    game.data.score += child.pointValue;
@@ -205,7 +188,12 @@ game.MothershipManager = me.Container.extend({
 			
 			me.game.world.addChild(scoreItem);
 			me.timer.setTimeout(function () {
-				me.game.world.removeChild(scoreItem);		
+				try {
+					me.game.world.removeChild(scoreItem);
+				}
+				catch (err) {
+					console.log("Error Removing scoreItem" + err);
+				}
 			}, 500);
 		},
 		ScoreItem : me.Renderable.extend({
@@ -217,7 +205,7 @@ game.MothershipManager = me.Container.extend({
 
 		        // create a font
 		        
-		        this.font = new me.Font("Verdana", "10pt", "#FFF", "right")
+		        this.font = new me.Font("Verdana", "10pt", "#FF0000", "right")
 
 		        // local copy of the global score
 		        this.value = -1;

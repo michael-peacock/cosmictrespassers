@@ -11,6 +11,7 @@ game.TitleScreen = me.ScreenObject.extend({
         }
     );
 
+    this.name = "TitleScreen";
     // position and scale to fit with the viewport size
     backgroundImage.anchorPoint.set(0, 0);
     backgroundImage.scale(me.game.viewport.width / backgroundImage.width, me.game.viewport.height / backgroundImage.height);

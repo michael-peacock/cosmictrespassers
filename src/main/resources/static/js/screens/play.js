@@ -15,8 +15,13 @@ game.PlayScreen = me.ScreenObject.extend({
 	  me.game.world.addChild(new me.ColorLayer("background", "#000000"), 0);
 	  
       game.data.waveCount += 1;
+      game.data.playerCount += 1;
 	  console.log("Play Screen Reset ... wave " + game.data.waveCount);
-
+	  
+	  // create a new particle system and add to game
+      game.enemyExplosionEmitter = new game.explosionManager(0, 0, "invader_explosion");
+      game.playerExplosionEmitter = new game.explosionManager(0, 0, "player_explosion");
+      
       // add our HUD to the game world
       this.HUD = new game.HUD.Container();
       me.game.world.addChild(this.HUD);	  
@@ -38,6 +43,9 @@ game.PlayScreen = me.ScreenObject.extend({
       me.input.bindKey(me.input.KEY.A, "left", true);
       me.input.bindKey(me.input.KEY.D, "right", true);
       me.input.bindKey(me.input.KEY.SPACE, "shoot", true);
+      me.input.bindPointer(me.input.pointer.LEFT, me.input.KEY.SPACE);
+      
+      this.name = "PlayScreen";
       
 
   },
@@ -46,13 +54,19 @@ game.PlayScreen = me.ScreenObject.extend({
    * action to perform when leaving this screen (state change)
    */
   onDestroyEvent : function () {
-	  
+
+	 // remove particle emitters
+	 game.enemyExplosionEmitter.remove();
+     game.playerExplosionEmitter.remove();
+
 	 // remove key bindings
 	 me.input.unbindKey(me.input.KEY.LEFT);
 	 me.input.unbindKey(me.input.KEY.RIGHT);
 	 me.input.unbindKey(me.input.KEY.A);
 	 me.input.unbindKey(me.input.KEY.D);
 	 me.input.unbindKey(me.input.KEY.SPACE);
+	 me.input.unbindPointer(me.input.pointer.LEFT);
+	 
   },
   
   resetPlayerEntity : function(newGame) {
@@ -75,26 +89,6 @@ game.PlayScreen = me.ScreenObject.extend({
 
   }, 
   showPlayerDieEffect: function(x,y) {
-		var image = me.loader.getImage('player_explosion');
-		var emitter = new me.ParticleEmitter(x, y, {
-		    image: image,
-		    totalParticles: 117,
-		    angle: 0,
-		    angleVariation: 6.283185307179586,
-		    maxLife: 1000,
-		    speed: 3.28947368421053,
-		    speedVariation: 3.55623100303951,
-		    minStartScale: 0.01,
-		    maxStartScale: 0.638297872340426
-		});
-		emitter.name = 'explosion';
-		emitter.pos.z = 11;
-		me.game.world.addChild(emitter);
-
-		emitter.burstParticles();
-
-		me.timer.setTimeout(function () {
-			me.game.world.removeChild(emitter);		
-		}, 1000);
+		game.playerExplosionEmitter.launch(x,y);
 	}
 });
