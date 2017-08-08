@@ -1,6 +1,6 @@
 game.EnemyManager = me.Container.extend({
   init : function () {
-      this._super(me.Container, "init", [0, 32,
+      this._super(me.Container, "init", [0, 50,
           this.COLS * game.data.gridSize - 32,
           this.ROWS * game.data.gridSize - 32
       ]);
@@ -129,7 +129,7 @@ game.MothershipManager = me.Container.extend({
 
 	  			var isLeft = common.functions.getRandomInt(0,1);
 	  			
-	  			if (isLeft) {
+	  			if (isLeft === 1) {
 	  				_this.mothershipSettings = {
 	  					xPos : 10,
 	  					yPos : 70,

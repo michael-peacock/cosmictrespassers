@@ -53,4 +53,4 @@ game.Laser = me.Entity.extend({
 });
 
 game.Laser.width = 6;
-game.Laser.height = 6;
+game.Laser.height = 28;
