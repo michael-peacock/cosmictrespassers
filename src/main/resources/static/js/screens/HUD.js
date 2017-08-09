@@ -166,8 +166,6 @@ game.HUD.PlayerLifeCounter = me.Renderable.extend({
 
         if (this.playerLives !== game.data.playerLives) {
             this.playerLives = game.data.playerLives;
-            
-
             this.redrawPlayerLives = true;
             return true;
         }
@@ -209,14 +207,16 @@ game.HUD.PlayerLifeCounter = me.Renderable.extend({
     
     removePlayerLifeSprites : function () {
     
-    	var lifeSprites = me.game.world.getChildByName("playerLifeCounter");
-    	try {
-    		me.game.world.removeChild(lifeSprites);
+    	var lifeSprites = me.game.world.getChildByProp("name","playerLifeCounter");
+    	while (lifeSprites != null) {
+    		try {
+    			me.game.world.removeChild(lifeSprites);
+    		}
+    		catch (err) {
+    			console.log("couldn't remove sprite ...");
+    		}
+    		lifeSprites = me.game.world.getChildByProp("name","playerLifeCounter");	
     	}
-    	catch (err) {
-    		console.log("couldn't remove sprite ...");
-    	}
-    	
     }
 
 });
