@@ -13,7 +13,7 @@ var game = {
         enemyVelocity : 16,
         playerWidth: 26,
         playerHeight:16,
-        playerLives:2,
+        playerLives:3,
         gridSize : 64
         	
     },

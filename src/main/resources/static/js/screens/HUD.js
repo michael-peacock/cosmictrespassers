@@ -166,10 +166,15 @@ game.HUD.PlayerLifeCounter = me.Renderable.extend({
 
         if (this.playerLives !== game.data.playerLives) {
             this.playerLives = game.data.playerLives;
+            
+
+            this.redrawPlayerLives = true;
             return true;
         }
+        this.redrawPlayerLives = false;
         return false;
     },
+    
 
     /**
      * draw the score
@@ -177,8 +182,41 @@ game.HUD.PlayerLifeCounter = me.Renderable.extend({
     draw : function (renderer) {
     	
         this.font.draw(renderer, "Lives: " + game.data.playerLives, this.pos.x, this.pos.y);
-       
 
+//        if (this.redrawPlayerLives) {
+//            var myPos = this.pos.x;
+//        	
+//           this.removePlayerLifeSprites();
+//            
+//            for (var i = 0; i < this.playerLives; i++) {
+//    			myPos += 30 ;
+//            	var sprite = new me.Sprite(myPos, this.pos.y + 5, {
+//            	    image : "player",
+//            	    name: "playerLifeCounter",
+//            	    framewidth : game.data.playerWidth,
+//            	    frameheight : game.data.playerHeight,
+//            	    anchorPoint : new me.Vector2d(0.5, 0.5)
+//            	});
+//            	
+//            	me.game.world.addChild(sprite);
+//            	
+//    		}
+//            
+//            this.redrawPlayerLives = false;
+//        	
+//        }
+    }, 
+    
+    removePlayerLifeSprites : function () {
+    
+    	var lifeSprites = me.game.world.getChildByName("playerLifeCounter");
+    	try {
+    		me.game.world.removeChild(lifeSprites);
+    	}
+    	catch (err) {
+    		console.log("couldn't remove sprite ...");
+    	}
+    	
     }
 
 });

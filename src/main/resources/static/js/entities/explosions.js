@@ -19,14 +19,14 @@ game.explosionManager = me.Object.extend({
     start: function(x, y) {
         // set the emitter params
         this.emitter.image = me.loader.getImage(this.imageName);
-        this.emitter.totalParticles = 100;
-        this.emitter.minLife = 2000;
-        this.emitter.maxLife = 5000;
-        this.emitter.speed = 7.5;
-        this.emitter.speedVariation = 3.55623100303951;
+        this.emitter.totalParticles = 75;
+        this.emitter.minLife = 1000;
+        this.emitter.maxLife = 3000;
+        this.emitter.speed = 9.5;
+        this.emitter.speedVariation = 5.55623100303951;
         this.emitter.angle = 0;
         this.emitter.angleVariation = 6.283185307179586,
-        this.emitter.minStartScale = 0.01;
+        this.emitter.minStartScale = 0.001;
         this.emitter.maxStartScale = 0.638297872340426;
 
         // move the emitter

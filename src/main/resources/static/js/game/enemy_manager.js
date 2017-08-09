@@ -122,6 +122,7 @@ game.MothershipManager = me.Container.extend({
 	  },
 
 	  onActivateEvent : function () {
+		  
 		    var _this = this;
 	    	var msDelay = common.functions.getRandomInt(5000,10000);
 	    	  
@@ -147,6 +148,8 @@ game.MothershipManager = me.Container.extend({
 	  			_this.motherShip = new game.MotherShip(_this.mothershipSettings.xPos, _this.mothershipSettings.yPos);
 	  			_this.motherShip.body.setVelocity(_this.mothershipSettings.xVel, 0);
 	  			_this.addChild(_this.motherShip);	
+		        // play the "shoot" audio clip
+		        //me.audio.play("ufo_highpitch", true);
 	  			}, msDelay);
 		},
 
@@ -158,8 +161,11 @@ game.MothershipManager = me.Container.extend({
 		
 		onDeactivateEvent : function () {
 		    me.timer.clearInterval(this.timer);
+		    me.audio.stop("ufo_highpitch");
 		},
 		removeChildNow : function (child) {
+			
+			me.audio.stop("ufo_highpitch");
 			
 			if (!child.exitingCanvas && game.data.playerLives > 0) {
 				console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);				
