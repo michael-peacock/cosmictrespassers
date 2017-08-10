@@ -145,40 +145,45 @@ game.MothershipManager = me.Container.extend({
 		    }
 		},	
 		spawnMotherShip : function () {
-			//me.audio.play("ufo_highpitch");
+
 			this.shotCount = 0;
-			this.shipSpawnThreshold = common.functions.getRandomInt(50,100);
+			this.shipSpawnThreshold = common.functions.getRandomInt(25,75);
   			this.isLeft = common.functions.getRandomInt(0,1);
+  			var direction = "";
+  			
+  			console.log("shipSpawnThreshold = " + this.shipSpawnThreshold);
+  			console.log("isLeft = " + this.isLeft);
   			
   			if (this.isLeft === 1) {
   				this.mothershipSettings = {
   					xPos : 10,
-  					yPos : 70,
-  					xVel : 3
+  					yPos : 70
   				}
-  				
+  				direction = "right";
   			} else {
   				// TODO: Need to figure out why this isn't spawning on the right side
   				this.mothershipSettings = {
-	  					xPos : me.game.viewport.width,
-	  					yPos : 70,
-	  					xVel : -3
+	  					xPos : me.game.viewport.width - game.MotherShip.width,
+	  					yPos : 70
 	  				}
+  				direction = "left";
   			}
   			
   			this.motherShip = new game.MotherShip(this.mothershipSettings.xPos, this.mothershipSettings.yPos);
-  			this.motherShip.body.setVelocity(this.mothershipSettings.xVel, 0);
+  			this.motherShip.setDirection(direction);
+  			this.motherShip.body.setVelocity(5,0);
   			this.addChild(this.motherShip);	
+			me.audio.playTrack("ufo_highpitch");
   			
 			
 		},
 		onDeactivateEvent : function () {
 		    me.timer.clearInterval(this.timer);
-		    me.audio.stop("ufo_highpitch");
+		    me.audio.stopTrack("ufo_highpitch");
 		},
 		removeChildNow : function (child) {
 			
-			me.audio.stop("ufo_highpitch");
+			me.audio.stopTrack("ufo_highpitch");
 			
 			if (!child.exitingCanvas && game.data.playerLives > 0) {
 				console.log("Removing Mothership: " + child.name + ", Value : " + child.pointValue);				

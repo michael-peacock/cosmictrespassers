@@ -99,8 +99,12 @@ game.MotherShip = me.Entity.extend({
 	   this.body.setVelocity(0, 0);
 	   this.body.collisionType = me.collision.types.COLLECTABLE_OBJECT;
 	   this.exitingCanvas = false;
+	   this.direction = "right";
 	  },
 
+	  setDirection : function(direction) {
+		this.direction =  direction; 
+	  },
 	  getPointValue: function () {
 		  // anywhere from 100-500 points
 		  return common.functions.getRandomInt(1,5) * 100;
@@ -109,11 +113,20 @@ game.MotherShip = me.Entity.extend({
 	  update : function (time) {
 		    this._super(me.Entity, "update", [time]);
 		    
-	        this.body.vel.x += this.body.accel.x * time / 1000;
-	        if (this.pos.x + this.width >= me.game.viewport.width) {
-	        	this.exitingCanvas = true;
-	            game.playScreen.motherShipManager.removeChild(this);
-	        }
+		    if (this.direction === "right") {
+		    	this.body.vel.x += this.body.accel.x * time / 1000;
+		        if (this.pos.x + this.width >= me.game.viewport.width) {
+		        	this.exitingCanvas = true;
+		            game.playScreen.motherShipManager.removeChild(this);
+		        }
+		    }
+		    else {
+		    	this.body.vel.x -= this.body.accel.x * time / 1000;
+		        if (this.pos.x - this.width <= 0) {
+		        	this.exitingCanvas = true;
+		            game.playScreen.motherShipManager.removeChild(this);
+		        }
+		    }
 
 		    this.body.update();
 
