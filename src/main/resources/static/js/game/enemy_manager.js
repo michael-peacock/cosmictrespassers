@@ -119,46 +119,59 @@ game.MothershipManager = me.Container.extend({
 	      this._super(me.Container, "init", [0, 16, me.game.viewport.width, 12 ]);
 	      this.vel =  0;
 		  this.motherShipSettings = {};
+		  this.shotCount = 0;
+		  this.shipSpawnThreshold = common.functions.getRandomInt(20,50);
+		  this.isLeft = common.functions.getRandomInt(0,2);
+		  
+		  console.log("shipSpawnThreshold = " + this.shipSpawnThreshold);
+		  console.log("isLeft = " + this.isLeft);
 	  },
 
+	  accumulate : function () {
+		  this.shotCount++;		  
+		  console.log("shotCount = " + this.shotCount);
+	  },
 	  onActivateEvent : function () {
 		  
-		    var _this = this;
-	    	var msDelay = common.functions.getRandomInt(5000,10000);
-	    	  
-	  		var msTimer = 	me.timer.setInterval(function () {
-
-	  			var isLeft = common.functions.getRandomInt(0,1);
-	  			
-	  			if (isLeft === 1) {
-	  				_this.mothershipSettings = {
-	  					xPos : 10,
-	  					yPos : 70,
-	  					xVel : 3
-	  				}
-	  				
-	  			} else {
-	  				_this.mothershipSettings = {
-		  					xPos : me.game.viewport.width,
-		  					yPos : 70,
-		  					xVel : -3
-		  				}
-	  			}
-	  			
-	  			_this.motherShip = new game.MotherShip(_this.mothershipSettings.xPos, _this.mothershipSettings.yPos);
-	  			_this.motherShip.body.setVelocity(_this.mothershipSettings.xVel, 0);
-	  			_this.addChild(_this.motherShip);	
-		        // play the "shoot" audio clip
-		        //me.audio.play("ufo_highpitch", true);
-	  			}, msDelay);
-		},
+	  },
 
 	   update : function (time) {
 			
 		    this._super(me.Container, "update", [time]);
 		    this.updateChildBounds();
+		    if (this.shotCount == this.shipSpawnThreshold) {
+		    	console.log("Spawning Mothership");
+		    	this.spawnMotherShip();
+		    }
 		},	
-		
+		spawnMotherShip : function () {
+			//me.audio.play("ufo_highpitch");
+			this.shotCount = 0;
+			this.shipSpawnThreshold = common.functions.getRandomInt(50,100);
+  			this.isLeft = common.functions.getRandomInt(0,1);
+  			
+  			if (this.isLeft === 1) {
+  				this.mothershipSettings = {
+  					xPos : 10,
+  					yPos : 70,
+  					xVel : 3
+  				}
+  				
+  			} else {
+  				// TODO: Need to figure out why this isn't spawning on the right side
+  				this.mothershipSettings = {
+	  					xPos : me.game.viewport.width,
+	  					yPos : 70,
+	  					xVel : -3
+	  				}
+  			}
+  			
+  			this.motherShip = new game.MotherShip(this.mothershipSettings.xPos, this.mothershipSettings.yPos);
+  			this.motherShip.body.setVelocity(this.mothershipSettings.xVel, 0);
+  			this.addChild(this.motherShip);	
+  			
+			
+		},
 		onDeactivateEvent : function () {
 		    me.timer.clearInterval(this.timer);
 		    me.audio.stop("ufo_highpitch");

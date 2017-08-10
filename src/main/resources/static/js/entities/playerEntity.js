@@ -27,7 +27,7 @@ game.Player = me.Entity.extend({
 
 	    if (me.input.isKeyPressed("shoot")) {
 	        me.game.world.addChild(me.pool.pull("laser", this.pos.x + game.data.playerWidth/2 - game.Laser.width, this.pos.y - game.Laser.height));
-	     
+	        game.playScreen.motherShipManager.accumulate();
 	        // play the "shoot" audio clip
 	        me.audio.play("shoot");
 	    }
